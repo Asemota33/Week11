@@ -149,8 +149,79 @@ namespace Week11
                 }
 
             }
-            NextButton_Click(sender, e);
             
+            
+        }
+
+        private void saveBinaryFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // configure the file dialog
+            studentSaveFileDialog.FileName = "Student.dat";
+            studentSaveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            studentSaveFileDialog.Filter = "Binary Files (*.dat)|*.dat| All Files (*.*)|*.*";
+
+            // open file dialog - Modal Form
+            var result = studentSaveFileDialog.ShowDialog();
+            if (result != DialogResult.Cancel)
+            {
+                //open file to write
+                using (BinaryWriter outputStream = new BinaryWriter
+                    (File.Open(studentSaveFileDialog.FileName, FileMode.Create)))
+                {
+                    //writing stuff to file
+
+                    outputStream.Write(Program.student.studentId);
+                    outputStream.Write(Program.student.FirstName);
+                    outputStream.Write(Program.student.LastName);
+
+                    //Cleanup
+                    outputStream.Flush();
+                    outputStream.Close();
+                    outputStream.Dispose();
+                }
+                MessageBox.Show("Binary File Saved", "Saving Binary File...",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void openBinaryFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // configure the file dialogue
+            studentOpenFileDialog.FileName = "Stdent.dat";
+            studentOpenFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            studentOpenFileDialog.Filter = "Binary Files (*.dat)|*.dat| All Files (*.*)|*.*";
+
+            //open file dialogue
+            var result = studentOpenFileDialog.ShowDialog();
+            if (result != DialogResult.Cancel)
+            {
+                try
+                {
+                    //open your stream to read
+                    using (BinaryReader inputStream =
+                        new BinaryReader(File.Open(studentOpenFileDialog.FileName, FileMode.Open)))
+                    {
+                        //reading stuff to file
+                        Program.student.FirstName = inputStream.ReadString();
+                        Program.student.studentId = inputStream.ReadString();
+                        Program.student.LastName = inputStream.ReadString();
+
+                        //Close file
+                        inputStream.Close();
+                        //Dispose of memory
+                        inputStream.Dispose();
+
+                        // After success open up the next page
+                        NextButton_Click(sender, e);
+                    }
+                }
+                catch (IOException exception)
+                {
+                    MessageBox.Show("Error: " + exception.Message, "File I/O Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
         }
     }
 }
