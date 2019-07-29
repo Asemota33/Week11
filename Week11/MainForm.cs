@@ -109,5 +109,48 @@ namespace Week11
             Program.student.FirstName = cells[(int)StudentField.FIRST_NAME].Value.ToString();
             Program.student.LastName = cells[(int)StudentField.LAST_NAME].Value.ToString();
         }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            // configure the file dialogue
+            studentOpenFileDialog.FileName = "Stdent.txt";
+            studentOpenFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            studentOpenFileDialog.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
+
+            //open file dialogue
+            var result = studentOpenFileDialog.ShowDialog();
+            if (result != DialogResult.Cancel)
+            {
+                try
+                {
+                    //open your stream to read
+                    using (StreamReader inputStream =
+                        new StreamReader(File.Open(studentOpenFileDialog.FileName, FileMode.Open)))
+                    {
+                        //reading stuff to file
+                        Program.student.FirstName = inputStream.ReadLine();
+                        Program.student.studentId = inputStream.ReadLine();
+                        Program.student.LastName = inputStream.ReadLine();
+
+                        //Close file
+                        inputStream.Close();
+                        //Dispose of memory
+                        inputStream.Dispose();
+
+                        // After success open up the next page
+                        NextButton_Click(sender, e);
+                    }
+                }
+                catch (IOException exception)
+                {
+                    MessageBox.Show("Error: " + exception.Message, "File I/O Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            NextButton_Click(sender, e);
+            
+        }
     }
 }

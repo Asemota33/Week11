@@ -13,35 +13,11 @@ namespace Week11
 
         private void StudentInfoForm_Activated(object sender, EventArgs e)
         {
-            try
-            {
-                //open your stream to read
-                using (StreamReader inputStream = 
-                    new StreamReader(File.Open("Student.txt", FileMode.Open)))
-            {
-                //reading stuff to file
-                Program.student.FirstName = inputStream.ReadLine();
-                Program.student.studentId = inputStream.ReadLine();
-                Program.student.LastName = inputStream.ReadLine();
-                
-                //Close file
-                inputStream.Close();
-                //Dispose of memory
-                inputStream.Dispose();
-
-                    // Write info from  student object to form labels
-                    LastNameDataLabel.Text = Program.student.LastName;
-                    FirstNameDataLabel.Text = Program.student.FirstName;
-                    DataLabel.Text = Program.student.studentId;
-            }
-
-            }
-            catch (IOException exception)
-            {
-
-                MessageBox.Show("Error: " + exception.Message, "File I/O Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+        
+            // Write info from  student object to form labels
+            LastNameDataLabel.Text = Program.student.LastName;
+            FirstNameDataLabel.Text = Program.student.FirstName;
+            DataLabel.Text = Program.student.studentId;
         }
 
         private void StudentInfoForm_Load(object sender, EventArgs e)
