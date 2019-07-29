@@ -34,7 +34,7 @@ namespace Week11
         private void SplashTimer_Tick(object sender, EventArgs e)
         {
             SplashTimer.Enabled = false;
-            Program.mainform.Show();
+            Program.mainForm.Show();
             this.Hide();
         }
 
